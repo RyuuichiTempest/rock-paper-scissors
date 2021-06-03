@@ -1,69 +1,24 @@
-import random
+import gamelogic
+import assets
 
-rock = '''Rock!\n
-    _______
----'   ____)
-      (_____)
-      (_____)
-      (____)
----.__(___)
-'''
+print(assets.messages["welcome"])
 
-paper = '''Paper!\n
-    _______
----'   ____)____
-          ______)
-          _______)
-         _______)
----.__________)
-'''
+game_loop = True
 
-scissors = '''Scissors!\n
-    _______
----'   ____)____
-          ______)
-       __________)
-      (____)
----.__(___)
-'''
+while game_loop is True:
 
-rock_paper_scissors_list = [rock, paper, scissors]
+    player_choice = gamelogic.get_player_input(
+        assets.messages["player_choice"])
 
-game_on = True
+    player_choice = gamelogic.check_if_valid_player_input(player_choice)
 
-print("Welcome to Rock, Paper, Scissors\n")
+    computer_choice = gamelogic.computer_choice()
 
-while game_on is True:
+    gamelogic.print_choices(player_choice, computer_choice)
 
-    user_choice = int(input('\nWhat do you choose? "0" for rock, "1" for paper and "2" for scissors\n\n'))
+    gamelogic.throw_comparison(player_choice, computer_choice)
 
-    if user_choice >= 3:
-        print("\nYou should choose a number between 0, 1 and 2\n")
-        continue_playing = input('Want to continue? "Y" or "N"?\n\n').lower()
-        if continue_playing == "y":
-            user_choice = int(input('What do you choose? "0" for rock, "1" for paper and "2" for scissors\n\n'))
-        else:
-            break
+    player_choice = gamelogic.get_player_input(assets.messages["continue?"])
 
-    print(f"\nYou choose: {rock_paper_scissors_list[user_choice]}\n")
-
-    computer_choice = random.randint(0, 2)
-    print(f"\nThe computer chooses: {rock_paper_scissors_list[computer_choice]}\n")
-
-    if user_choice == computer_choice:
-        print("It's a draw!\n")
-    elif ((user_choice == 0 and computer_choice == 1)
-          or (user_choice == 1 and computer_choice == 2)
-          or (user_choice == 2 and computer_choice == 0)):
-        print("You lose :(\n")
-    elif ((user_choice == 0 and computer_choice == 2)
-          or (user_choice == 2 and computer_choice == 1)
-          or (user_choice == 1 and computer_choice == 0)):
-        print("You win! :)\n")
-
-    continue_playing = input("Want to continue? Y or N?\n\n").lower()
-
-    if continue_playing == "y":
-        continue
-    else:
-        game_on = False
+    if gamelogic.want_to_continue(player_choice) is False:
+        game_loop = False
